@@ -1,0 +1,52 @@
+{% load static %}
+<!-- ========================= Slider ========================= -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecommerce Slider</title>
+<!------stylesheet------>
+<link rel="stylesheet" type = "text/css" href="{% static 'css/slider.css' %}">
+<!------LightSlider.css------>
+<link rel="stylesheet" type = "text/css" href="{% static 'css/lightslider.css' %}">
+<!------jQuery------>
+<script type = "text/javascript" src = "{% static 'js/jquery3.js' %}"></script>
+<!------LightSlider.js------>
+<script type = "text/javascript" src = "{% static 'js/lightslider.js' %}"></script>
+</head>
+<body>
+    <ul id="autoWidth" class="cs-hidden">
+        {% for product in prod_links %}
+            <li class="item-a">
+                <!------BoxSlider------>
+                <div class = "box">
+                    <!------ImgBox------>
+                    <div class = "slide-img">
+                        <img src="{{product.images.url}}" alt="1">
+                        <!------Overlayer------>
+                        <div class = "overlay">
+                            <!------but-tn------>
+                            <a href="#" class = "buy-btn">Order Now</a>
+                        </div>
+                    </div>
+                    <!------DetailBox------>
+                    <div class = "detail-box">
+                        <!------type------>
+                        <div class = "type">
+                            <a href="#">{{product.product_name}}</a>
+                            <span>New Arrival</span>
+                            <!------price------>
+                        </div>
+                        <a href="#" class = "price">${{product.price}}</a>
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+        
+    </ul> 
+<!------JSScript------>
+<script type = "text/javascript" src = "{% static 'js/slider_script.js' %}"></script>
+</body>
+</html>
+<!-- ========================= Slider_END ========================= -->
