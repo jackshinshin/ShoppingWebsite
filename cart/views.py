@@ -37,3 +37,4 @@ class CartView(ListView):
     model = CartItem
     template_name = 'store/cart.html'
     context_object_name = 'current_items'
+    
