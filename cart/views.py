@@ -1,4 +1,5 @@
 
+from django.http import HttpResponse
 from django.urls import reverse
 from django.shortcuts import redirect
 from django.views.generic import TemplateView, ListView
@@ -37,4 +38,22 @@ class CartView(ListView):
     model = CartItem
     template_name = 'store/cart.html'
     context_object_name = 'current_items'
+
+    def get_context_data(self, **kwargs):
+        total = 0
+        total_num = 0
+        try:
+            cart = Cart.objects.get(cart_id = _cart_id(self.request))
+            cart_items = CartItem.objects.filter(cart = cart, is_active = True)
+            for item in cart_items:
+                total += item.product.price * item.quantity
+                total_num += item.quantity
+                print(total)
+        except Cart.DoesNotExist:
+            pass
+        kwargs.update(
+            Total_price = total,
+            Total_number = total_num
+        )
+        return super().get_context_data(**kwargs)
     

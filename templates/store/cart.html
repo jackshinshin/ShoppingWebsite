@@ -71,7 +71,7 @@
 		<div class="card-body">
 			<dl class="dlist-align">
 			  <dt>Total price:</dt>
-			  <dd class="text-right">$69.97</dd>
+			  <dd class="text-right">${{Total_price}}</dd>
 			</dl>
 			<dl class="dlist-align">
 			  <dt>Tax:</dt>
@@ -79,14 +79,14 @@
 			</dl>
 			<dl class="dlist-align">
 			  <dt>Total:</dt>
-			  <dd class="text-right text-dark b"><strong>$59.97</strong></dd>
+			  <dd class="text-right text-dark b"><strong>${{Total_price}}</strong></dd>
 			</dl>
 			<hr>
 			<p class="text-center mb-3">
 				<img src="./images/misc/payments.png" height="26">
 			</p>
 			<a href="./place-order.html" class="btn btn-primary btn-block"> Checkout </a>
-			<a href="./store.html" class="btn btn-light btn-block">Continue Shopping</a>
+			<a href="{% url 'store:Store' %}" class="btn btn-light btn-block">Continue Shopping</a>
 		</div> <!-- card-body.// -->
 		</div> <!-- card.// -->
 
