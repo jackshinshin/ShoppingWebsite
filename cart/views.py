@@ -1,7 +1,7 @@
 
 from django.http import HttpResponse
 from django.urls import reverse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView, ListView
 
 from .models import CartItem, Cart
@@ -32,6 +32,22 @@ def add_cart(request, product_id):
             quantity = 1,
             cart = cart
         )
+    return redirect(reverse('cart:Cart'))
+def decrement_item(request, product_id):
+    cart = Cart.objects.get(cart_id = _cart_id(request))
+    product = get_object_or_404(Product, id = product_id)
+    item = CartItem.objects.get(cart = cart, product = product)
+    if item.quantity > 1:
+        item.quantity -= 1
+        item.save()
+    else:
+        item.delete()
+    return redirect(reverse('cart:Cart'))
+def remove_item(request, product_id):
+    cart = Cart.objects.get(cart_id = _cart_id(request))
+    product = get_object_or_404(Product, id = product_id)
+    item = CartItem.objects.get(cart = cart, product = product)
+    item.delete()
     return redirect(reverse('cart:Cart'))
 class CartView(ListView):
     model = CartItem
