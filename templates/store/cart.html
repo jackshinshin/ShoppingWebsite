@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
-
 
 <section class="section-content padding-y bg">
 <div class="container">
@@ -21,7 +20,8 @@
 </tr>
 </thead>
 <tbody>
-{% for item  in current_items %}
+{% for item in current_items %}
+{% comment %} {{item.product.stock | json_script:"product-maximum"}} {% endcomment %}
 <tr>
 	<td>
 		<figure class="itemside align-items-center">
@@ -35,21 +35,21 @@
 	<td> 
 		<!-- col.// -->
 					<div class="col"> 
-						<div class="input-group input-spinner">
+						<div class="input-group input-spinner" id="btn-section">
 							<div class="input-group-prepend">
-							<button class="btn btn-light" type="button" id="button-plus"> <i class="fa fa-minus"></i> </button>
+							<a href="{% url 'cart:add_item' item.product.id %}" class="btn btn-light increment-btn" type="button" id="button-plus"> <i class="fa fa-plus"></i> </a>
 							</div>
-							<input type="text" class="form-control"  value="1">
+							<input type="text" class="form-control" id="qty-input" value="{{item.quantity}}">
 							<div class="input-group-append">
-							<button class="btn btn-light" type="button" id="button-minus"> <i class="fa fa-plus"></i> </button>
+							<a class="btn btn-light decrement-btn" type="button" id="button-minus"> <i class="fa fa-minus"></i> </a>
 							</div>
 						</div> <!-- input-group.// -->
 					</div> <!-- col.// -->
 	</td>
 	<td> 
 		<div class="price-wrap"> 
-			<var class="price">${{item.product.price}}</var> 
-			<small class="text-muted"> ${{item.product.price}} </small> 
+			<var class="price">${{item.sub_total}}</var> 
+			<small class="text-muted"> ${{item.product.price}} each </small> 
 		</div> <!-- price-wrap .// -->
 	</td>
 	<td class="text-right"> 
@@ -75,15 +75,15 @@
 			</dl>
 			<dl class="dlist-align">
 			  <dt>Tax:</dt>
-			  <dd class="text-right"> $10.00</dd>
+			  <dd class="text-right"> ${{Tax}}</dd>
 			</dl>
 			<dl class="dlist-align">
 			  <dt>Total:</dt>
-			  <dd class="text-right text-dark b"><strong>${{Total_price}}</strong></dd>
+			  <dd class="text-right text-dark b"><strong>${{Grand_Total}}</strong></dd>
 			</dl>
 			<hr>
 			<p class="text-center mb-3">
-				<img src="./images/misc/payments.png" height="26">
+				<img src="{% static 'images/misc/payments.png' %}" height="26">
 			</p>
 			<a href="./place-order.html" class="btn btn-primary btn-block"> Checkout </a>
 			<a href="{% url 'store:Store' %}" class="btn btn-light btn-block">Continue Shopping</a>

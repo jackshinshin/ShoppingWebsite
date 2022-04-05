@@ -33,7 +33,6 @@ def add_cart(request, product_id):
             cart = cart
         )
     return redirect(reverse('cart:Cart'))
-# class AddCart()
 class CartView(ListView):
     model = CartItem
     template_name = 'store/cart.html'
@@ -42,18 +41,24 @@ class CartView(ListView):
     def get_context_data(self, **kwargs):
         total = 0
         total_num = 0
+        tax = 0
+        grand_total = 0
         try:
             cart = Cart.objects.get(cart_id = _cart_id(self.request))
             cart_items = CartItem.objects.filter(cart = cart, is_active = True)
             for item in cart_items:
                 total += item.product.price * item.quantity
                 total_num += item.quantity
-                print(total)
+            tax = (5*total)/100
+            tax = round(tax, 0)
+            grand_total = total + tax
         except Cart.DoesNotExist:
             pass
         kwargs.update(
             Total_price = total,
-            Total_number = total_num
+            Total_number = total_num,
+            Tax = tax,
+            Grand_Total = grand_total
         )
         return super().get_context_data(**kwargs)
     
