@@ -5,12 +5,14 @@ from store.models import Product
 from category.models import Category
 from cart.models import CartItem
 from cart.views import _cart_id
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 # Create your views here.
 class StoreView(ListView):
     model = Product
     # queryset = Product.objects.all()
     context_object_name = 'product_list'
     template_name = 'store/store.html'
+    max_per_page = 3
     def get_queryset(self):
         # kwargs can be used to access url variables
         try:
@@ -19,7 +21,19 @@ class StoreView(ListView):
             return Product.objects.all().filter(category = categories, is_available = True)
         except (KeyError):
             return Product.objects.all().filter(is_available = True)
-            
+
+    def item_each_page(self):
+        products = self.get_queryset()
+        paginator = Paginator(products, self.max_per_page)
+        page = self.request.GET.get('page')
+        return paginator.get_page(page)
+    def get_context_data(self, **kwargs):
+        paged_products = self.item_each_page()
+        kwargs.update(
+            products = paged_products
+        )
+        
+        return super().get_context_data(**kwargs)
 
 class ProductDetailView(DetailView):
     # template_name = "modelname_detail.html"

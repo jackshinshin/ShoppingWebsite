@@ -10,7 +10,7 @@ def counter(request):
             cart = Cart.objects.get(cart_id = _cart_id(request))
             cart_items = CartItem.objects.all().filter(cart = cart)
             for item in cart_items:
-                cart_counter += 1
+                cart_counter += item.quantity
         except (Cart.DoesNotExist):
             pass
     return dict(
