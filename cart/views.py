@@ -12,6 +12,7 @@ def _cart_id(request):
     if not cart:
         cart = request.session.create()
     return cart
+
 def add_cart(request, product_id):
     product = Product.objects.get(id = product_id)
     try:
@@ -33,6 +34,7 @@ def add_cart(request, product_id):
             cart = cart
         )
     return redirect(reverse('cart:Cart'))
+
 def decrement_item(request, product_id):
     cart = Cart.objects.get(cart_id = _cart_id(request))
     product = get_object_or_404(Product, id = product_id)
