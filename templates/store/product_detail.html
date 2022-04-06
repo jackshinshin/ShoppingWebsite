@@ -81,7 +81,8 @@
                 {% else %}
                     <a href="{% url 'cart:add_item' current_product.id %}" class="btn  btn-primary"> 
                         <span class="text">Add to cart</span> 
-                        <i class="fas fa-shopping-cart"></i>  
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="badge badge-pill badge-danger notify">{{Total_number}}</span>
                     </a>
                 {% endif %}
                 
