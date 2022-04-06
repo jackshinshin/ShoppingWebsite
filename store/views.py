@@ -3,6 +3,8 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, DetailView
 from store.models import Product
 from category.models import Category
+from cart.models import CartItem
+from cart.views import _cart_id
 # Create your views here.
 class StoreView(ListView):
     model = Product
@@ -11,7 +13,6 @@ class StoreView(ListView):
     template_name = 'store/store.html'
     def get_queryset(self):
         # kwargs can be used to access url variables
-        
         try:
             catslug = self.kwargs['catslug']
             categories = get_object_or_404(Category, category_slug = catslug)
@@ -36,6 +37,13 @@ class ProductDetailView(DetailView):
             catslug = self.kwargs['catslug']
             categories = get_object_or_404(Category, category_slug = catslug)
             return Product.objects.all().filter(category = categories, is_available = True)
+    def get_context_data(self, **kwargs):
+        every_product = Product.objects.get(category__category_slug = self.kwargs['catslug'], product_slug = self.kwargs['prodslug'])
+        in_cart = CartItem.objects.filter(product = every_product, cart__cart_id = _cart_id(self.request)).exists()
+        kwargs.update(
+            item_already_added = in_cart
+        )
+        return super().get_context_data(**kwargs)
         
         
         
