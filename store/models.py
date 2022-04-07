@@ -1,4 +1,5 @@
 from django.db import models
+from matplotlib import is_interactive
 from category.models import Category
 from django.urls import reverse
 # Create your models here.
@@ -18,3 +19,17 @@ class Product(models.Model):
         return reverse('store:products_by_category', args = [self.product_slug])
     def __str__(self) -> str:
         return self.product_name
+
+variation_choices = (
+    ('color', 'Color'),
+    ('size', 'Size')
+)
+class Variation(models.Model):
+    product             = models.ForeignKey(Product, on_delete=models.CASCADE)
+    # This is for dropdown list
+    variation_category  = models.CharField(max_length=20, choices=variation_choices)
+    variation_value     = models.CharField(max_length=20)
+    is_active           = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.product.product_name

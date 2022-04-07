@@ -61,6 +61,7 @@ class ProductDetailView(DetailView):
     # template_name = "modelname_detail.html"
     model = Product
     context_object_name = 'current_product'
+    
     def get_object(self):
         try:
             catslug = self.kwargs['catslug']
@@ -73,6 +74,7 @@ class ProductDetailView(DetailView):
             catslug = self.kwargs['catslug']
             categories = get_object_or_404(Category, category_slug = catslug)
             return Product.objects.all().filter(category = categories, is_available = True)
+        
     def get_context_data(self, **kwargs):
         every_product = Product.objects.get(category__category_slug = self.kwargs['catslug'], product_slug = self.kwargs['prodslug'])
         in_cart = CartItem.objects.filter(product = every_product, cart__cart_id = _cart_id(self.request)).exists()
