@@ -1,5 +1,4 @@
 from django.db import models
-from matplotlib import is_interactive
 from category.models import Category
 from django.urls import reverse
 # Create your models here.
