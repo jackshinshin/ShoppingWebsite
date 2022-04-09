@@ -13,10 +13,10 @@ def _cart_id(request):
         cart = request.session.create()
     return cart
 
-def add_cart(request, product_id):
+def add_cart(request, product_id, req_number):
     color = request.GET.get('Color')
     size = request.GET.get('Size')
-    return HttpResponse(color + ' ' + size)
+    # return HttpResponse(color + ' ' + size)
     product = Product.objects.get(id = product_id)
     try:
         cart = Cart.objects.get(cart_id = _cart_id(request))
@@ -28,12 +28,12 @@ def add_cart(request, product_id):
 
     try:
         cart_item = CartItem.objects.get(product = product, cart = cart)
-        cart_item.quantity += 1
+        cart_item.quantity = req_number
         cart_item.save()
     except:
         cart_item = CartItem.objects.create(
             product = product,
-            quantity = 1,
+            quantity = req_number,
             cart = cart
         )
     return redirect(reverse('cart:Cart'))

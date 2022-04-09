@@ -26,8 +26,10 @@
 	</tr>
 	</thead>
 	<tbody>
+	{% comment %} {{{% url 'cart:add_item' %} | json_script:"add_item_url"}} {% endcomment %}
+	
 	{% for item in current_items %}
-	{% comment %} {{item.product.stock | json_script:"product-maximum"}} {% endcomment %}
+	
 	<tr>
 		<td>
 			<figure class="itemside align-items-center">
@@ -40,19 +42,19 @@
 		</td>
 		<td> 
 			<!-- col.// -->
-						<div class="col"> 
-							<div class="input-group input-spinner" id="btn-section">
+						<div class="col">
+							<div class="input-group input-spinner block" id="btn-section" data-number = '{{item.quantity}}' data-uid = '{{item.product.id}}' data-price = '{{item.product.price}}'>
 								<div class="input-group-prepend">
-								<a href="{% url 'cart:add_item' item.product.id %}" class="btn btn-light increment-btn" type="button" id="button-plus"> <i class="fa fa-plus"></i> </a>
+									<button class="btn btn-light increment-btn" type="button" id="button-plus" value='+'> <i class="fa fa-plus"></i> </button>
 								</div>
-								<input type="text" class="form-control" id="qty-input" value="{{item.quantity}}">
+								<input type="text" class="form-control count" id="qty-input" value="{{item.quantity}}">
 								<div class="input-group-append">
-								<a href="{% url 'cart:decrement_item' item.product.id %}" class="btn btn-light decrement-btn" type="button" id="button-minus"> <i class="fa fa-minus"></i> </a>
+									<button class="btn btn-light decrement-btn" type="button" id="button-minus" value='-'> <i class="fa fa-minus"></i> </button>
 								</div>
 							</div> <!-- input-group.// -->
 						</div> <!-- col.// -->
 		</td>
-		<td> 
+		<td id="price_field"> 
 			<div class="price-wrap"> 
 				<var class="price">${{item.sub_total}}</var> 
 				<small class="text-muted"> ${{item.product.price}} each </small> 
@@ -74,18 +76,18 @@
 		<aside class="col-lg-3">
 
 			<div class="card">
-			<div class="card-body">
+			<div class="card-body total" data-tax='{{Tax}}'>
 				<dl class="dlist-align">
 				<dt>Total price:</dt>
-				<dd class="text-right">${{Total_price}}</dd>
+				<dd class="text-right" id="global_price">${{Total_price}}</dd>
 				</dl>
 				<dl class="dlist-align">
 				<dt>Tax:</dt>
-				<dd class="text-right"> ${{Tax}}</dd>
+				<dd class="text-right" id="tax"> ${{Tax}}</dd>
 				</dl>
 				<dl class="dlist-align">
 				<dt>Total:</dt>
-				<dd class="text-right text-dark b"><strong>${{Grand_Total}}</strong></dd>
+				<dd class="text-right text-dark b" id="global_price_taxed"><strong>${{Grand_Total}}</strong></dd>
 				</dl>
 				<hr>
 				<p class="text-center mb-3">
