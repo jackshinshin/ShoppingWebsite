@@ -8,25 +8,30 @@ window.onload = function(){
 
 function plus_minus_button(){
   let calculationBase = this.value == "+" ? 1 : -1;
-  let parent = this.parentElement;
-  let grandparent = parent.parentElement;
-  let count = grandparent.querySelector(".count");
+  // let parent = this.parentElement;
+  // let block = parent.parentElement;
+  let block = this.closest('.block');
+  // let count = block.querySelector(".count");
+  let count = block.querySelector(".count");
   let result = ( parseInt( count.value ) || 0 ) + calculationBase;
   if( result >= 0 )
-    grandparent.dataset.number = result;
-  count.value = grandparent.dataset.number
-  update2Database( grandparent.dataset.uid, grandparent.dataset.number );
+    block.dataset.number = result;
+  count.value = block.dataset.number
+  update2Database( block.dataset.uid, block.dataset.number );
   updateGlobalPrice( );
 }
 
 function input_box(){
-  let parent = this.parentElement;
-  let grandparent = parent.parentElement;
+  // let parent = this.parentElement;
+  // let block = parent.parentElement;
+  let block = document.querySelector('.block');
+  // let count = block.querySelector(".count");
+  let count = block.querySelector(".count");
   let result = ( parseInt( this.value ) || 0 );
   if( result >= 0 )
-    grandparent.dataset.number = result;
-  this.value = grandparent.dataset.number
-  update2Database( grandparent.dataset.uid, grandparent.dataset.number );
+    block.dataset.number = result;
+  this.value = block.dataset.number
+  update2Database( block.dataset.uid, block.dataset.number );
   updateGlobalPrice( );
 }
 
@@ -36,15 +41,20 @@ async function update2Database( uid, count ){
   console.log( response );
 }
 
-function updateGlobalPrice(){
+function updateGlobalPrice( ){
   let global_price = 0;
   let last_section = document.querySelector('.total')
   let tax_rate = 0.05;
-  for(let el of document.querySelectorAll(".block")){
-    global_price += el.dataset.number * el.dataset.price;
-  }
   let money_symbol = "$"
+  for(let el of document.querySelectorAll(".block")){
+    let local_price = el.dataset.number * el.dataset.price;
+    // global_price += local_price;
+    global_price += local_price;
+    el.querySelector('.price').innerText = money_symbol.concat(local_price);
+  }
+  
   let tax = Math.round(global_price*tax_rate);
+  
   last_section.querySelector("#global_price").innerText = money_symbol.concat(global_price);
   last_section.querySelector("#tax").innerText = money_symbol.concat(tax);
   global_price += tax;

@@ -30,7 +30,7 @@
 	
 	{% for item in current_items %}
 	
-	<tr>
+	<tr class='block' data-number = '{{item.quantity}}' data-uid = '{{item.product.id}}' data-price = '{{item.product.price}}'>
 		<td>
 			<figure class="itemside align-items-center">
 				<div class="aside"><img src="{{item.product.images.url}}" class="img-sm"></div>
@@ -43,7 +43,7 @@
 		<td> 
 			<!-- col.// -->
 						<div class="col">
-							<div class="input-group input-spinner block" id="btn-section" data-number = '{{item.quantity}}' data-uid = '{{item.product.id}}' data-price = '{{item.product.price}}'>
+							<div class="input-group input-spinner" id="btn-section">
 								<div class="input-group-prepend">
 									<button class="btn btn-light increment-btn" type="button" id="button-plus" value='+'> <i class="fa fa-plus"></i> </button>
 								</div>
