@@ -7,11 +7,8 @@ window.onload = function(){
 }
 
 function plus_minus_button(){
-  let calculationBase = this.value == "+" ? 1 : -1;
-  // let parent = this.parentElement;
-  // let block = parent.parentElement;
+  let calculationBase = this.value == "+" ? 1 : -1;  
   let block = this.closest('.block');
-  // let count = block.querySelector(".count");
   let count = block.querySelector(".count");
   let result = ( parseInt( count.value ) || 0 ) + calculationBase;
   if( result >= 0 )
@@ -22,11 +19,7 @@ function plus_minus_button(){
 }
 
 function input_box(){
-  // let parent = this.parentElement;
-  // let block = parent.parentElement;
   let block = document.querySelector('.block');
-  // let count = block.querySelector(".count");
-  let count = block.querySelector(".count");
   let result = ( parseInt( this.value ) || 0 );
   if( result >= 0 )
     block.dataset.number = result;
@@ -36,7 +29,7 @@ function input_box(){
 }
 
 async function update2Database( uid, count ){
-  // let target_url = document.getElementById('add_item_url').textContent;
+  
   let response = await fetch(`add_cart/${uid}/${count}`).then( res => res.json() );
   console.log( response );
 }
@@ -48,7 +41,6 @@ function updateGlobalPrice( ){
   let money_symbol = "$"
   for(let el of document.querySelectorAll(".block")){
     let local_price = el.dataset.number * el.dataset.price;
-    // global_price += local_price;
     global_price += local_price;
     el.querySelector('.price').innerText = money_symbol.concat(local_price);
   }

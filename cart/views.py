@@ -1,5 +1,5 @@
 
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView, ListView
@@ -14,8 +14,8 @@ def _cart_id(request):
     return cart
 
 def add_cart(request, product_id, req_number):
-    color = request.GET.get('Color')
-    size = request.GET.get('Size')
+    # color = request.GET.get('Color')
+    # size = request.GET.get('Size')
     # return HttpResponse(color + ' ' + size)
     product = Product.objects.get(id = product_id)
     try:
@@ -36,7 +36,10 @@ def add_cart(request, product_id, req_number):
             quantity = req_number,
             cart = cart
         )
-    return redirect(reverse('cart:Cart'))
+    if 'Color' in request.POST:
+        return redirect(reverse('cart:Cart'))
+    return JsonResponse({"item_name":product.product_name,
+                         "item_count":cart_item.quantity})
 
 def decrement_item(request, product_id):
     cart = Cart.objects.get(cart_id = _cart_id(request))
